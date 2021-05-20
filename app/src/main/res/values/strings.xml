@@ -10,5 +10,6 @@
 
     <!-- fragment tags -->
     <string name="fragment_camera2">Camera2</string>
+    <string name="fragment_camera1">Camera1</string>
     <string name="fragment_view_stickers">View Stickers</string>
 </resources>

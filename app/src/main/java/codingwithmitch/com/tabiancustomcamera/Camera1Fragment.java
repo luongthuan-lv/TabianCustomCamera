@@ -36,7 +36,6 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.ExifInterface;
 import android.media.Image;
 import android.media.ImageReader;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -51,7 +50,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -62,7 +60,6 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -70,17 +67,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -89,12 +82,12 @@ import java.util.concurrent.TimeUnit;
  * Created by User on 5/29/2018.
  */
 
-public class Camera2Fragment extends Fragment implements
+public class Camera1Fragment extends Fragment implements
         View.OnClickListener,
         View.OnTouchListener,
         VerticalSlideColorPicker.OnColorChangeListener {
 
-    private static final String TAG = "Camera2Fragment";
+    private static final String TAG = "Camera1Fragment";
     private static final int REQUEST_CAMERA_PERMISSION = 0;
     private static final String FRAGMENT_DIALOG = "dialog";
 
@@ -174,7 +167,7 @@ public class Camera2Fragment extends Fragment implements
     private String mCameraId;
 
     /**
-     * The {@link android.util.Size} of camera preview.
+     * The {@link Size} of camera preview.
      */
     private Size mPreviewSize;
 
@@ -256,14 +249,14 @@ public class Camera2Fragment extends Fragment implements
     private VerticalSlideColorPicker mVerticalSlideColorPicker;
 
 
-    public static Camera2Fragment newInstance() {
-        return new Camera2Fragment();
+    public static Camera1Fragment newInstance() {
+        return new Camera1Fragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_camera2, container, false);
+        View view = inflater.inflate(R.layout.fragment_camera1, container, false);
 
 
         return view;
@@ -309,10 +302,11 @@ public class Camera2Fragment extends Fragment implements
 
         setMaxSizes();
         resetIconVisibilities();
+
         BroadcastReceiver captureImage = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Toast.makeText(context, "Alo alo 2", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Alo alo 1", Toast.LENGTH_SHORT).show();
                 if (!mIsImageAvailable) {
                     Log.d(TAG, "onClick: taking picture.");
                     takePicture();
@@ -1428,7 +1422,7 @@ public class Camera2Fragment extends Fragment implements
                 }
             }
             mIMainActivity.setCameraFrontFacing();
-            mCameraId = mIMainActivity.getBackCameraId();
+            mCameraId = mIMainActivity.getFrontCameraId();
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -1454,7 +1448,7 @@ public class Camera2Fragment extends Fragment implements
     }
 
     /**
-     * Configures the necessary {@link android.graphics.Matrix} transformation to `mTextureView`.
+     * Configures the necessary {@link Matrix} transformation to `mTextureView`.
      * This method should be called after the camera preview size is determined in
      * setUpCameraOutputs and also the size of `mTextureView` is fixed.
      *
@@ -1761,7 +1755,6 @@ public class Camera2Fragment extends Fragment implements
 
         @Override
         public void run() {
-
             if (mImage != null) {
                 ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
                 byte[] bytes = new byte[buffer.remaining()];
@@ -1772,6 +1765,7 @@ public class Camera2Fragment extends Fragment implements
                     File file = new File(mFile, fname);
                     output = new FileOutputStream(file);
                     output.write(bytes);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     mCallback.done(e);
