@@ -92,15 +92,15 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         }
     }
 
-    public void verifyPermissions(){
+    public void verifyPermissions() {
         Log.d(TAG, "verifyPermissions: asking user for permissions.");
         String[] permissions = {
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA};
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                permissions[0] ) == PackageManager.PERMISSION_GRANTED
+                permissions[0]) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                permissions[1] ) == PackageManager.PERMISSION_GRANTED) {
+                permissions[1]) == PackageManager.PERMISSION_GRANTED) {
             mPermissions = true;
             init();
         } else {
@@ -207,6 +207,12 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                 camera2Fragment.drawingStarted();
             }
         }
+        Camera1Fragment camera1Fragment = (Camera1Fragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_camera1));
+        if (camera1Fragment != null) {
+            if (camera1Fragment.isVisible()) {
+                camera1Fragment.drawingStarted();
+            }
+        }
     }
 
     @Override
@@ -215,6 +221,12 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         if (camera2Fragment != null) {
             if (camera2Fragment.isVisible()) {
                 camera2Fragment.drawingStopped();
+            }
+        }
+        Camera1Fragment camera1Fragment = (Camera1Fragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_camera1));
+        if (camera1Fragment != null) {
+            if (camera1Fragment.isVisible()) {
+                camera1Fragment.drawingStopped();
             }
         }
     }
@@ -273,6 +285,13 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                 camera2Fragment.addSticker(sticker);
             }
         }
+
+        Camera1Fragment camera1Fragment = (Camera1Fragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_camera1));
+        if (camera1Fragment != null) {
+            if (camera1Fragment.isVisible()) {
+                camera1Fragment.drawingStopped();
+            }
+        }
     }
 
     @Override
@@ -281,6 +300,12 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         if (camera2Fragment != null) {
             if (camera2Fragment.isVisible()) {
                 camera2Fragment.setTrashIconSize(width, height);
+            }
+        }
+        Camera1Fragment camera1Fragment = (Camera1Fragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_camera1));
+        if (camera1Fragment != null) {
+            if (camera1Fragment.isVisible()) {
+                camera1Fragment.drawingStopped();
             }
         }
     }
@@ -292,6 +317,12 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                 camera2Fragment.dragStickerStarted();
             }
         }
+        Camera1Fragment camera1Fragment = (Camera1Fragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_camera1));
+        if (camera1Fragment != null) {
+            if (camera1Fragment.isVisible()) {
+                camera1Fragment.drawingStopped();
+            }
+        }
     }
 
     public void dragStickerStopped() {
@@ -299,6 +330,12 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         if (camera2Fragment != null) {
             if (camera2Fragment.isVisible()) {
                 camera2Fragment.dragStickerStopped();
+            }
+        }
+        Camera1Fragment camera1Fragment = (Camera1Fragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_camera1));
+        if (camera1Fragment != null) {
+            if (camera1Fragment.isVisible()) {
+                camera1Fragment.drawingStopped();
             }
         }
     }
